@@ -43,3 +43,5 @@ jobs:
               docker rmi example22:latest || true
               docker build --no-cache -t example22:latest .
               docker run -d -p 8080:8080 --name example22-container example22:latest
+              
+              echo "# force trigger" >> README.md
