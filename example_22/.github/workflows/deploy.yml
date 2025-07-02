@@ -33,12 +33,13 @@ jobs:
       - name: Run Docker commands on VPS
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          password: ${{ secrets.SERVER_PASSWORD }}
-          script: |
-            cd /home/root/app
-            docker stop example22-container || true
-            docker rm example22-container || true
-            docker build -t example22:latest .
-            docker run -d -p 8080:8080 --name example22-container example22:latest
+            host: ${{ secrets.SERVER_HOST }}
+            username: ${{ secrets.SERVER_USER }}
+            password: ${{ secrets.SERVER_PASSWORD }}
+            script: |
+              cd /home/root/app
+              docker stop example22-container || true
+              docker rm example22-container || true
+              docker rmi example22:latest || true
+              docker build --no-cache -t example22:latest .
+              docker run -d -p 8080:8080 --name example22-container example22:latest
