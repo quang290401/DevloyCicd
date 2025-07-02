@@ -1,0 +1,43 @@
+ BƯỚC 1: Build file .jar
+./mvnw clean package -DskipTests
+Sau khi chạy xong sẽ có file : target/example-0.0.1-SNAPSHOT.jar
+🐳 BƯỚC 2: Tạo Dockerfile
+Tạo file Dockerfile (không có đuôi .txt) đặt cạnh file jar:
+# Image nhẹ chứa JDK 17
+FROM openjdk:17-jdk-slim
+
+# Tạo thư mục làm việc
+WORKDIR /app
+
+# Copy file jar vào container
+COPY target/example-0.0.1-SNAPSHOT.jar app.jar
+
+# Câu lệnh chạy ứng dụng
+ENTRYPOINT ["java", "-jar", "app.jar"]
+
+giải thich
+FROM: chỉ định base image
+
+COPY: sao chép file jar vào container
+
+ENTRYPOINT: chạy ứng dụng khi container khởi động
+
+🏗️ BƯỚC 3: Build Docker image
+Tại thư mục chứa Dockerfile, chạy:
+
+docker build -t example-app:latest .
+✅ example-app là tên image bạn muốn đặt (tuỳ ý)
+
+
+🚀 BƯỚC 4: Chạy Docker container
+
+docker run -d -p 8080:8080 --name example-container example-app:latest
+✅ Giải thích:
+
+-d: chạy ngầm (detached)
+
+-p 8080:8080: ánh xạ cổng trong container với cổng máy
+
+--name: đặt tên container
+
+example-app:latest: image vừa build

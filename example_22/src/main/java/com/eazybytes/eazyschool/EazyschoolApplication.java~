@@ -1,0 +1,28 @@
+package com.eazybytes.eazyschool;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+@SpringBootApplication
+public class EazyschoolApplication {
+
+	public static void main(String[] args) {
+
+		SpringApplication.run(EazyschoolApplication.class, args);
+	}
+//public static void main(String[] args) {
+//	String jdbcURL = "jdbc:mysql://192.168.20.34:3306/security?useSSL=false&allowPublicKeyRetrieval=true";
+//	String user = "root";
+//	String password = "your_password";
+//
+//	try (Connection conn = DriverManager.getConnection(jdbcURL, user, password)) {
+//		System.out.println("✅ Connected to MySQL successfully!");
+//	} catch (SQLException e) {
+//		System.out.println("❌ Failed to connect: " + e.getMessage());
+//	}
+//}
+}
