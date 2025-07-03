@@ -31,10 +31,13 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: ./example_22
           file: ./example_22/Dockerfile
           push: true
-          tags: quang042000/example22:latest
+          tags: quang2904/example22:latest
