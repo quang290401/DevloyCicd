@@ -7,7 +7,6 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    container: false  # Tắt container ảo hóa của GitHub để tránh xung đột
 
     steps:
       - name: Checkout source code
