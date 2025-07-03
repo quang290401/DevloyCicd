@@ -40,4 +40,4 @@ jobs:
           context: ./example_22
           file: ./example_22/Dockerfile
           push: true
-          tags: quang2904/example22:latest
+          tags: quang042000/example22:latest
