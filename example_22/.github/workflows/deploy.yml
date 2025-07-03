@@ -19,7 +19,9 @@ jobs:
           distribution: 'temurin'
 
       - name: Build JAR file
-        run: mvn clean package -DskipTests
+        run: |
+          cd example_22
+          ./mvnw clean package -DskipTests
 
       - name: Copy files to VPS
         uses: appleboy/scp-action@v0.1.4
@@ -27,20 +29,19 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASSWORD }}
-          source: "target/example_22-0.0.1-SNAPSHOT.jar,Dockerfile"
+          source: "example_22/target/example_22-0.0.1-SNAPSHOT.jar,example_22/Dockerfile"
           target: "/home/root/app"
 
       - name: Run Docker commands on VPS
         uses: appleboy/ssh-action@master
         with:
-            host: ${{ secrets.SERVER_HOST }}
-            username: ${{ secrets.SERVER_USER }}
-            password: ${{ secrets.SERVER_PASSWORD }}
-            script: |
-              cd /home/root/app
-              docker stop example22-container || true
-              docker rm example22-container || true
-              docker rmi example22:latest || true
-              docker build --no-cache -t example22:latest .
-              docker run -d -p 8080:8080 --name example22-container example22:latest
-              
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          script: |
+            cd /home/root/app
+            docker stop example22-container || true
+            docker rm example22-container || true
+            docker rmi example22:latest || true
+            docker build --no-cache -t example22:latest .
+            docker run -d -p 8080:8080 --name example22-container example22:latest
