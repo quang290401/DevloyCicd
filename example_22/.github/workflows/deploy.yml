@@ -7,6 +7,7 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    container: false  # Tắt container ảo hóa của GitHub để tránh xung đột
 
     steps:
       - name: Checkout source code
@@ -24,25 +25,40 @@ jobs:
           chmod +x mvnw
           ./mvnw clean package -DskipTests
 
+      - name: Install SSH key
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
       - name: Copy files to VPS
-        uses: appleboy/scp-action@v0.1.4
+        uses: appleboy/scp-action@v0.1.7  # Phiên bản mới nhất
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
-          password: ${{ secrets.SERVER_PASSWORD }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}  # Sử dụng SSH key thay vì password
           source: "example_22/target/example_22-0.0.1-SNAPSHOT.jar,example_22/Dockerfile"
           target: "/home/root/app"
+          strip_components: 1
 
       - name: Run Docker commands on VPS
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@v0.1.10  # Phiên bản mới nhất
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
-          password: ${{ secrets.SERVER_PASSWORD }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}  # Sử dụng SSH key thay vì password
           script: |
             cd /home/root/app
-            docker stop example22-container || true
-            docker rm example22-container || true
-            docker rmi example22:latest || true
+            # Dọn dẹp container và image cũ
+            docker ps -aq --filter "name=example22-container" | xargs -r docker stop | xargs -r docker rm || true
+            docker images -q example22:latest | xargs -r docker rmi || true
+            # Build và run container mới
             docker build --no-cache -t example22:latest .
-            docker run -d -p 8080:8080 --name example22-container example22:latest
+            docker run -d \
+              -p 8080:8080 \
+              --name example22-container \
+              --restart unless-stopped \
+              -e SPRING_PROFILES_ACTIVE=prod \
+              example22:latest
+            # Kiểm tra container đã chạy
+            docker ps -a | grep example22-container
+            echo "Deployment completed successfully!"
