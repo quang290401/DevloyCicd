@@ -1,16 +1,16 @@
 name: Build and Push Docker Image
 
-
 on:
   push:
-    branches: [ "master" ]
+    branches:
+      - master
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout source code
+      - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Set up JDK 17
@@ -19,31 +19,22 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Build JAR file
+      - name: Build jar file
         working-directory: example_22
         run: |
           chmod +x mvnw
           ./mvnw clean package -DskipTests
 
-      - name: Copy files to VPS
-        uses: appleboy/scp-action@v0.1.4
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
         with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          password: ${{ secrets.SERVER_PASSWORD }}
-          source: "example_22/target/example_22-0.0.1-SNAPSHOT.jar,example_22/Dockerfile"
-          target: "/home/root/app"
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Run Docker commands on VPS
-        uses: appleboy/ssh-action@master
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
         with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          password: ${{ secrets.SERVER_PASSWORD }}
-          script: |
-            cd /home/root/app
-            docker stop example22-container || true
-            docker rm example22-container || true
-            docker rmi example22:latest || true
-            docker build --no-cache -t example22:latest .
-            docker run -d -p 8080:8080 --name example22-container example22:latest
+          context: ./example_22
+          file: ./example_22/Dockerfile
+          push: true
+          tags: quang042000/example22:latest
