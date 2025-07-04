@@ -38,10 +38,10 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            docker pull quang2904/example22:latest
+            docker pull quang042000/example22:latest
             docker stop example22-container || true
             docker rm example22-container || true
-            docker run -d -p 80:8080 --name example22-container quang2904/example22:latest
+            docker run -d -p 80:8080 --name example22-container quang042000/example22:latest
           
 
 
