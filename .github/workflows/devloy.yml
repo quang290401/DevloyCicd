@@ -43,7 +43,6 @@ jobs:
             docker rm example22-container || true
             docker run -d -p 80:8080 --name example22-container quang042000/example22:latest
           
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
