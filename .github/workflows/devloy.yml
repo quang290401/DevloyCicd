@@ -21,13 +21,12 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      # 3. Build .jar file using Maven Wrapper
+      # 3. Build JAR file using Maven Wrapper (for Windows)
       - name: Build JAR with Maven
         working-directory: example_22
-        shell: bash
+        shell: cmd
         run: |
-         chmod +x ./mvnw
-         ./mvnw clean package -DskipTests
+          call mvnw.cmd clean package -DskipTests
 
       # 4. Set up Docker Buildx
       - name: Set up Docker Buildx
@@ -49,11 +48,11 @@ jobs:
           push: true
           tags: quang042000/example22:latest
 
-      # 7. Restart Docker container
+      # 7. Restart Docker container (Windows compatible)
       - name: Restart Docker container
-        shell: bash
+        shell: cmd
         run: |
-          docker stop example_22-container || true
-          docker rm example_22-container || true
-          docker pull quang042000/example_22:latest
-          docker run -d -p 80:8080 --name example_22-container quang042000/example_22:latest
+          docker stop example22-container || exit 0
+          docker rm example22-container || exit 0
+          docker pull quang042000/example22:latest
+          docker run -d -p 80:8080 --name example22-container quang042000/example22:latest
