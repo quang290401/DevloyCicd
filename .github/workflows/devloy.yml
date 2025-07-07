@@ -26,8 +26,8 @@ jobs:
         working-directory: example_22
         shell: bash
         run: |
-         chmod +x ./example_22/mvnw
-         ./example_22/mvnw clean package -DskipTests
+          chmod +x ./mvnw
+          ./mvnw clean package -DskipTests
 
       # 4. Set up Docker Buildx
       - name: Set up Docker Buildx
@@ -53,7 +53,7 @@ jobs:
       - name: Restart Docker container
         shell: bash
         run: |
-          docker stop example22-container || true
-          docker rm example22-container || true
-          docker pull quang042000/example22:latest
-          docker run -d -p 80:8080 --name example22-container quang042000/example22:latest
+          docker stop example_22-container || true
+          docker rm example_22-container || true
+          docker pull quang042000/example_22:latest
+          docker run -d -p 80:8080 --name example_22-container quang042000/example_22:latest
