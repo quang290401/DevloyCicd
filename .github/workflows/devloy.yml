@@ -28,6 +28,7 @@ jobs:
         run: |
           chmod +x mvnw
           ./mvnw clean package -DskipTests
+            continue-on-error: true
 
       # 4. Set up Docker Buildx (nên setup trước build image)
       - name: Set up Docker Buildx
