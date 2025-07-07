@@ -26,7 +26,7 @@ jobs:
         working-directory: example_22
         shell: bash
         run: |
-          chmod +x mvnw
+          chmod +x ./mvnw
           ./mvnw clean package -DskipTests
 
       # 4. Set up Docker Buildx
@@ -49,9 +49,9 @@ jobs:
           push: true
           tags: quang042000/example22:latest
 
-      # 7. Stop, remove and run Docker container
+      # 7. Restart Docker container
       - name: Restart Docker container
-        shell: cmd
+        shell: bash
         run: |
           docker stop example22-container || true
           docker rm example22-container || true
