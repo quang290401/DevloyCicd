@@ -22,13 +22,13 @@ jobs:
           distribution: 'temurin'
 
       # 3. Build .jar file using Maven Wrapper
-      - name: Build JAR file with Maven
-        working-directory: example_22
-        shell: cmd
+      - name: Run Docker container locally
+        shell: pwsh
         run: |
-          chmod +x mvnw
-          ./mvnw clean package -DskipTests
-            continue-on-error: true
+         docker stop example22-container 2>$null
+         docker rm example22-container 2>$null
+         docker run -d -p 80:8080 --name example22-container quang042000/example22:latest
+
 
       # 4. Set up Docker Buildx (nên setup trước build image)
       - name: Set up Docker Buildx
