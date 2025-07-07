@@ -24,7 +24,7 @@ jobs:
       # 3. Build .jar file using Maven Wrapper
       - name: Build JAR file with Maven
         working-directory: example_22
-        shell: bash
+        shell: cmd
         run: |
           chmod +x mvnw
           ./mvnw clean package -DskipTests
