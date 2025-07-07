@@ -23,10 +23,10 @@ jobs:
 
       # 3. Build .jar file using Maven Wrapper
       - name: Run Docker container locally
-        shell: pwsh
+        shell: cmd
         run: |
-         docker stop example22-container 2>$null
-         docker rm example22-container 2>$null
+         docker stop example22-container || exit 0
+         docker rm example22-container || exit 0
          docker run -d -p 80:8080 --name example22-container quang042000/example22:latest
 
 
