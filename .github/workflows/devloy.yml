@@ -33,14 +33,14 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # 5. Login Docker Hub
+      # 5. (Tùy chọn) Login Docker Hub nếu bạn vẫn muốn push lên Docker Hub
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # 6. Build & Push Docker Image
+      # 6. Build & Push Docker Image (vẫn push lên Docker Hub nếu bạn muốn)
       - name: Build and Push Docker image
         uses: docker/build-push-action@v5
         with:
@@ -49,15 +49,10 @@ jobs:
           push: true
           tags: quang042000/example22:latest
 
-      # 7. SSH to VPS and deploy container
-      - name: Deploy Docker container on VPS
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          password: ${{ secrets.SERVER_PASSWORD }}
-          script: |
-            docker pull quang042000/example22:latest
-            docker stop example22-container || true
-            docker rm example22-container || true
-            docker run -d -p 80:8080 --name example22-container quang042000/example22:latest
+      # 7. Run Docker container locally
+      - name: Run Docker container locally
+        run: |
+          docker stop example22-container || true
+          docker rm example22-container || true
+          docker pull quang042000/example22:latest
+          docker run -d -p 80:8080 --name example22-container quang042000/example22:latest
