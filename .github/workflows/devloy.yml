@@ -51,7 +51,7 @@ jobs:
 
       # 7. Stop, remove and run Docker container
       - name: Restart Docker container
-        shell: bash
+        shell: cmd
         run: |
           docker stop example22-container || true
           docker rm example22-container || true
