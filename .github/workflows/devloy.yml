@@ -56,3 +56,5 @@ jobs:
           docker rm example22-container || true
           docker pull quang042000/example22:latest
           docker run -d -p 80:8080 --name example22-container quang042000/example22:latest
+
+          
