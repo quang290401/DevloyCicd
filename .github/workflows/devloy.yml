@@ -26,8 +26,8 @@ jobs:
         working-directory: example_22
         shell: bash
         run: |
-          chmod +x ./mvnw
-          ./mvnw clean package -DskipTests
+         chmod +x ./example_22/mvnw
+         ./example_22/mvnw clean package -DskipTests
 
       # 4. Set up Docker Buildx
       - name: Set up Docker Buildx
