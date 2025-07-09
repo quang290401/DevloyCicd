@@ -23,10 +23,7 @@ public class ContactService {
         log.info(contact.toString());
         return isSaved;
     }
-    //cộng hai số nguyên
-    public int add(int a, int b) {
-        return a + b;
-    }
+
 
 
 
