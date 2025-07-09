@@ -17,11 +17,14 @@ public class ContactService {
      * @param contact
      * @return boolean
      */
-    public boolean saveMessageDetails(Contact contact){
+    public boolean saveMessageDetail(Contact contact){
         boolean isSaved = true;
         //TODO - Need to persist the data into the DB table
         log.info(contact.toString());
         return isSaved;
     }
+
+
+
 
 }
