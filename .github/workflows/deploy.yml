@@ -52,9 +52,9 @@ jobs:
       - name: Restart Docker container
         shell: cmd
         run: |
-          docker stop example22-container || exit 0
-          docker rm example22-container || exit 0
+          docker stop example-container || exit 0
+          docker rm example-container || exit 0
           docker pull quang042000/example22:latest
-          docker run -d -p 8080:8080 --name example22-container quang042000/example22:latest
+          docker run -d -p 8080:8080 --name example-container quang042000/example22:latest
 
           
